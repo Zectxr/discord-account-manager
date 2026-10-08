@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Manager</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .button-group button {
+      flex: 1;
+      padding: 14px;
+      font-size: 15px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Discord Manager</h1>
+    <button id="exportBtn" class="login-btn" title="Copy all tokens to clipboard">Export</button>
+  </div>
+
+  <div id="accounts" class="accounts-list"></div>
+
+  <div class="add-section">
+    <textarea id="newToken" rows="1" placeholder="Paste tokens — one per line" autocomplete="off"></textarea>
+    <div class="button-group">
+      <button id="addAndLoginBtn">Add Token & Login</button>
+      <button id="addOnlyBtn">Add Current Account</button>
+    </div>
+  </div>
+
+  <div id="status" class="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
