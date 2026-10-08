@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addAndLoginBtn = document.getElementById('addAndLoginBtn');
   const addOnlyBtn = document.getElementById('addOnlyBtn');
   const exportBtn = document.getElementById('exportBtn');
+  const statusDiv = document.getElementById('status');
+
+  function toast(msg) {
+    statusDiv.textContent = msg;
+    statusDiv.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => statusDiv.classList.remove('show'), 1500);
+  }
 
   const DEFAULT_AVATAR = 'https://discord.com/assets/18e336a74a159cfd.png';
 
@@ -58,6 +66,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       };
       div.appendChild(logoutBtn);
 
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'delete-btn';
+      copyBtn.title = 'Copy token';
+      copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+      const COPY_ICON = copyBtn.innerHTML;
+      copyBtn.onclick = async () => {
+        await navigator.clipboard.writeText(acc.token);
+        copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        copyBtn.title = 'Copied';
+        setTimeout(() => { copyBtn.innerHTML = COPY_ICON; copyBtn.title = 'Copy token'; }, 1500);
+      };
+      div.appendChild(copyBtn);
+
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'delete-btn';
       deleteBtn.title = 'Delete';
@@ -83,8 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const accounts = (await chrome.storage.sync.get('accounts')).accounts || [];
     if (!accounts.length) return;
     await navigator.clipboard.writeText(accounts.map(a => a.token).join('\n'));
-    exportBtn.textContent = 'Copied';
-    setTimeout(() => { exportBtn.textContent = 'Export'; }, 1500);
+    toast('All tokens copied');
   });
 
   async function fetchTokenFromLocalStorage() {
