@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "Discord Account Manager",
-  "version": "1.3",
+  "version": "1.4",
   "description": "Instantly switch and manage multiple Discord accounts.",
   "icons": {
     "16": "icons/icon16.png",
